@@ -96,10 +96,12 @@ if __name__ == '__main__':
     gallery_feature = result['gallery_f']
     gallery_cam = result['gallery_cam'][0]
     gallery_label = result['gallery_label'][0]
-
-    k1_list = [80]#, 100, 120]
-    k2_list = [15]#, 20]
-    lambda_list = [0]#, 0.2]
+    
+    # optimal values from the paper.
+    
+    k1_list = [20]   #[80, 100, 120]
+    k2_list = [6]    #[5, 20]
+    lambda_list = [0.3]  #[0, 0.2]
     for k1 in k1_list:
         for k2 in k2_list:
             if k2>k1:
