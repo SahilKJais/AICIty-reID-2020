@@ -242,6 +242,7 @@ def extract_feature(model,dataloaders):
 def get_id(img_path):
     camera_id = []
     labels = []
+    frames = []
     for path, v in img_path:
         #filename = path.split('/')[-1]
         filename = os.path.basename(path)
@@ -250,22 +251,24 @@ def get_id(img_path):
             labels.append(9999999)
             camera_id.append(9999999)
         else:
-            x = filename.split('_')[0]
-            label = x
+            x = filename.split('_')
+            label = x[0]
+            frame = x[2]
             camera = filename.split('C')[1]
             if label[0:2]=='-1':
                 labels.append(-1)
             else:
                 labels.append(int(label))
             camera_id.append(int(camera[0:1]))
+            frames.append(int(frame))
         #print(camera[0:3])
-    return camera_id, labels
+    return camera_id, labels, frames
 
 gallery_path = image_datasets['gallery'].imgs
 query_path = image_datasets['query'].imgs
 
-gallery_cam,gallery_label = get_id(gallery_path)
-query_cam,query_label = get_id(query_path)
+gallery_cam,gallery_label,gallery_frame = get_id(gallery_path) ## add gallery frames for naming
+query_cam,query_label,query_frame = get_id(query_path)   ## add query frames for naming
 
 if opt.multi:
     mquery_path = image_datasets['multi-query'].imgs
@@ -344,7 +347,7 @@ with torch.no_grad():
     query_feature = extract_feature(model,dataloaders['query'])
 
 # Save to Matlab for check
-result = {'gallery_f':gallery_feature.numpy(),'gallery_label':gallery_label,'gallery_cam':gallery_cam,'query_f':query_feature.numpy(),'query_label':query_label,'query_cam':query_cam}
+result = {'gallery_f':gallery_feature.numpy(),'gallery_label':gallery_label,'gallery_cam':gallery_cam,'gallery_frame':gallery_frame,'query_f':query_feature.numpy(),'query_label':query_label,'query_cam':query_cam,'query_frame':query_frame}
 scipy.io.savemat('pytorch_result.mat',result)
 
 result_file = './data/outputs/%s/result.txt'%opt.name
