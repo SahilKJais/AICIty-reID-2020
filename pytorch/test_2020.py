@@ -253,7 +253,7 @@ def get_id(img_path):
         else:
             x = filename.split('_')
             label = x[0]
-            frame = x[2]
+            frame = os.path.splitext(filename)[0]
             camera = filename.split('C')[1]
             if label[0:2]=='-1':
                 labels.append(-1)
