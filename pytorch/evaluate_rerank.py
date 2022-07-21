@@ -97,11 +97,12 @@ if __name__ == '__main__':
     gallery_cam = result['gallery_cam'][0]
     gallery_label = result['gallery_label'][0]
     
-    # optimal values from the paper.
+    # optimal values from the paper are k1=20, k2=6, lamda=0.3.
+    #for original distance only lamda=1, for jaccard distance only lamda = 0
     
     k1_list = [20]   #[80, 100, 120]
-    k2_list = [6]    #[5, 20]
-    lambda_list = [0.3]  #[0, 0.2]
+    k2_list = [1]    #[5, 20]
+    lambda_list = [1]  #[0, 0.2]
     for k1 in k1_list:
         for k2 in k2_list:
             if k2>k1:
